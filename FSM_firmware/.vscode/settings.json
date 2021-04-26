@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "algorithm": "cpp",
+        "deque": "cpp",
+        "functional": "cpp",
+        "iterator": "cpp",
+        "iterator_base": "cpp",
+        "list": "cpp",
+        "type_traits": "cpp",
+        "vector": "cpp"
+    }
+}
