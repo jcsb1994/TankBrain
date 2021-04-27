@@ -18,49 +18,34 @@
 //
 //***********************************************************************************
 
-
 #ifndef ATMEGA328P_EEPROM_H
 #define ATMEGA328P_EEPROM_H
 
 #include <Arduino.h>
 #include <EEPROM.h>
 
-#define NB_SAVE_VALUES (5)
-#define VALUES_TYPE_SIZE (sizeof(float))
+#define NB_SAVE_VALUES (4)
+#define MEMORY_ADR_SIZE (sizeof(double))
 
-class memory_interface
-{
+class MemoryInterface {
 private:
-    uint8_t _currentSaveIndex;            // Which of the address is currently targeted
-    uint8_t _saveAddress[NB_SAVE_VALUES]; // EEPROM addresses to save into
-    float _savedValue[NB_SAVE_VALUES];    // Torque values stored in the eeprom addresses
+    int _writeAddresses[NB_SAVE_VALUES];
+    uint8_t _currentWriteIndex;            // Which of the address index is currently targeted
 
-    bool deleteFlag = false;
-
-    void generateSaveAddresses();
+    void _generateWriteAddresses();
 
 public:
-    memory_interface()
-    {
-        generateSaveAddresses();
-        populateSavedValues();
+    MemoryInterface() {
+        _generateWriteAddresses();
     }
-    ~memory_interface() {}
+    ~MemoryInterface() {}
 
-    uint8_t getTargetAddress()  { return _saveAddress[_currentSaveIndex]; }
-    float getTargetValue() { return _savedValue[_currentSaveIndex]; }
-    float getValue(uint8_t val_idx) { return _savedValue[val_idx]; }
+    void incrementSaveIndex();
+    void decrementSaveIndex();
+    uint8_t getSaveIndex() {return _currentWriteIndex; }
 
-    void populateSavedValues(); // Puts all eeprom values into the _savedValue array
-
-    // Which slot is targeted if save or delete is pressed 
-    uint8_t getCurrentIndex() { return _currentSaveIndex; }
-    void decrementCurrentIndex();
-    void incrementCurrentIndex();
-
-    bool isDeleteFlagged() { return deleteFlag; }
-    void setDeleteFlag(bool is_pressed) { deleteFlag = is_pressed; }
-    void saveToCurrentIndex(float val);
+    // uint8_t saveStruct(KneeAssessment_t assessment);
+    // KneeAssessment_t readStruct(uint8_t saveIdx);
 };
 
-#endif // MEMORY_IF_H
+#endif 

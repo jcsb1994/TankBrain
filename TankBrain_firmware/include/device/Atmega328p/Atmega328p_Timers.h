@@ -31,10 +31,12 @@
 #define ATMEGA328P_TIMERS_H
 
 #include <Arduino.h>
+#include <avr/interrupt.h>
 
 #define WDT_CONFIG 0
-#define TIMER_ONE_CONFIG 1
-
+#define TIMER_TWO_CONFIG 0
+#define TIMER_ONE_CONFIG 0
+#define TIMER_ZERO_CONFIG 0
 
 /*##################################################
             WDT

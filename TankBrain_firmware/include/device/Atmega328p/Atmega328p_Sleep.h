@@ -14,10 +14,9 @@
 //***********************************************************************************
 //
 // Description:
-//    This file provides a high level interface for Atmega328p low level sleep
+//    This file provides a high level interface for Atmega328p low power sleep
 //
 //***********************************************************************************
-
 
 #ifndef ATMEGA328P_SLEEP_H
 #define ATMEGA328P_SLEEP_H

@@ -1,50 +1,44 @@
 #include "device/Atmega328p/Atmega328p_EEPROM.h"
 
-void memory_interface::generateSaveAddresses()
-{
-    for (int i = 0; i < NB_SAVE_VALUES; i++)
-    {
-        _saveAddress[i] = (i * VALUES_TYPE_SIZE);
+
+void MemoryInterface::_generateWriteAddresses() {
+    for (int i = 0; i < NB_SAVE_VALUES; i++) {
+        _writeAddresses[i] = (i * MEMORY_ADR_SIZE);
     }
 }
 
-void memory_interface::populateSavedValues()
+void MemoryInterface::decrementSaveIndex()
 {
-    for (int adr_i = 0; adr_i < NB_SAVE_VALUES; adr_i++)
-    {
-        union eepromBytesToFloat
-        {
-            uint8_t byte[4];
-            float eepromFloat;
-        } u;
-
-        for (uint8_t i = 0; i < VALUES_TYPE_SIZE; i++)
-            u.byte[i] = EEPROM.read(_saveAddress[adr_i] + i);
-
-        _savedValue[adr_i] = u.eepromFloat;
-    }
-}
-
-void memory_interface::decrementCurrentIndex()
-{
-    if (_currentSaveIndex == 0)
-        _currentSaveIndex = (NB_SAVE_VALUES - 1);
+    if (_currentWriteIndex == 0)
+        _currentWriteIndex = (NB_SAVE_VALUES - 1);
     else
-        _currentSaveIndex--;
+        _currentWriteIndex--;
+    if (_currentWriteIndex >= NB_SAVE_VALUES)
+        _currentWriteIndex = 0;
+
 }
 
-void memory_interface::incrementCurrentIndex()
+void MemoryInterface::incrementSaveIndex()
 {
-    _currentSaveIndex++;
-    if (_currentSaveIndex == NB_SAVE_VALUES)
-        _currentSaveIndex = 0;
+    _currentWriteIndex++;
+    if (_currentWriteIndex >= NB_SAVE_VALUES)
+        _currentWriteIndex = 0;
 }
 
-void memory_interface::saveToCurrentIndex(float val)
-{
-    unsigned char readingBytes[sizeof val];
-    memcpy(readingBytes, &val, sizeof val);
-    
-    for (uint8_t i = 0; i < sizeof val; i++)
-        EEPROM.update(this->getTargetAddress() + i, readingBytes[i]);
-}
+// uint8_t MemoryInterface::saveAssessment(KneeAssessment_t assessment) {
+//     EEPROM.put(_writeAddresses[_currentWriteIndex++], assessment);
+//     if (_currentWriteIndex >= NB_SAVE_VALUES) {
+//         _currentWriteIndex = 0;
+//     }
+// }
+
+// KneeAssessment_t MemoryInterface::readAssessment(uint8_t saveIdx) {
+//     if (_currentWriteIndex >= NB_SAVE_VALUES) 
+//         _currentWriteIndex = (NB_SAVE_VALUES-1); 
+//     KneeAssessment_t assess;
+//     EEPROM.get(_writeAddresses[saveIdx], assess);
+//     if (assess.ID > 999) {
+//         assess.ID = 0;
+//     }
+//     return assess;
+// }

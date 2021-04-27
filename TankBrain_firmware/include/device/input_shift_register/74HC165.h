@@ -52,4 +52,14 @@ void SPI_init();
 
 void inputShiftSnapShot();
 
+/***************************************************************************/
+// transfer_shift_reg_data function
+  /*!
+    @brief  returns content of the pin states register
+    @param  none
+  */
+ /***************************************************************************/
+
+int transfer_shift_reg_data();
+
 #endif

@@ -56,25 +56,6 @@ void WDT_setup()
 
 void timer1_setup()
 {
-    /*   //TIMER 1 SETUP (used for debouncing)
-  TCCR1A = 0; //timer 1 control register is reset as this is needed before we setup the prescaler for the
-
-  //BITS 2:0 (CS12 TO CS10) OF TCCR1B USED TO SETUP PRESCALER AS NEEDED TO CHANGE TCNT1 SPEED
-  TCCR1B |= (1 << CS12); // bit config as 0 0 1 gives a prescaler of 1
-  TCCR1B &= ~(1 << CS11);
-  TCCR1B &= ~(1 << CS10);
-
-  //RESET TCNT1 TO START COUNTING AFTER SETUP
-  TCNT1 = 0;
-
-  //SETUP DESIRED NUMBER OF CYCLES ON TCNT1 UNTIL INTERRUPT IS FIRED
-  OCR1A = 1000;
-
-  //ACTIVATE INTERRUPTS WITH OCR1A REGISTER (FIRE INTERRUPT WHEN TCNT1 VALUE MATCHES WITH IT)
-  TIMSK1 = (1 << OCIE1A); //OCIE1A is the bit that sets up interrupts with OCR1A
-
-  sei(); //activate global interrupts */
-
     cli();
     //set timer1 interrupt at 1Hz
     TCCR1A = 0; // set entire TCCR1A register to 0
@@ -90,6 +71,10 @@ void timer1_setup()
     TIMSK1 |= (1 << OCIE1A);
     sei();
 }
+
+#endif
+
+#if TIMER_ZERO_CONFIG
 
 // timer 0 controls PWM outputs on 5 and 6
 void timer0_setup()
